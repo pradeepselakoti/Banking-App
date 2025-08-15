@@ -5,7 +5,7 @@ import RightSidebar from '../components/RightSidebar';
 
 
 const Home = () => {
-  const loggedIn = {firstName: 'Pradeep'};
+  const loggedIn = {firstName: 'Pradeep' ,lastName: 'Selakoti', email:'Pradeepselakoti@gmail.com'};
   return (
       <section className="home">
       <div className="home-content">
@@ -29,7 +29,7 @@ const Home = () => {
          <RightSidebar 
           user={loggedIn}
           transactions={[]}
-          banks={[]}
+          banks={[{currentBalance:123.40},{currentBalance:4343.898}]}
          />
       </section>
   )

@@ -6,45 +6,33 @@ import {z} from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+  Form
+ 
 } from "@/components/ui/form"
-
-
-
-
-const formSchema = z.object({
-  email: z.string().email(),
-})
-
+import CustomInput from './CustomInput'
+import { authFormSchema } from '@/lib/utils'
 
 
 const AuthForm = ({type}:{type:string}) => {
   const [user, setuser] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
 
-
+  // Call authFormSchema with type parameter
+  const formSchema = authFormSchema(type);
 
    // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
         email: "",
+        password: '',
+        
       },
     })
    
     // 2. Define a submit handler.
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
-      setIsLoading(true);
-      // Handle form submission here
       console.log(data);
-      setIsLoading(false);
     }
 
 
@@ -81,64 +69,18 @@ const AuthForm = ({type}:{type:string}) => {
       </header>
       {user?(
         <div className='flex flex-col gap-4'>
-
-
-
         </div>
       ):(
         <>
          <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className='form-label'>
-                Email
-              </FormLabel>
-              <div className='flex w-full flex-col'>
-                <FormControl>
-                  <Input placeholder='Enter your Details'
-                  className='input-class'
-                  type='email'
-                  {...field}
-                  />
-                </FormControl>
-                <FormMessage className='form-message mt-2' />
-              </div>
-            </FormItem>
-          )}
-        />
+        
 
-        {/* <CustomInput
-        form={form} name='username' label='username' placeholder='Enter your username'/>
+        <CustomInput
+        control={form.control} name='email' label='Email' placeholder='Enter your username'/>
 
          <CustomInput
-        form={form} name='username' label='password' placeholder='Enter your password'/> */}
-
-
-         <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className='form-label'>
-                Password
-              </FormLabel>
-              <div className='flex w-full flex-col'>
-                <FormControl>
-                  <Input placeholder='Enter your password'
-                  className='input-class'
-                  type='password'
-                  {...field}
-                  />
-                </FormControl>
-                <FormMessage className='form-message mt-2' />
-              </div>
-            </FormItem>
-          )}
-        />
+        control={form.control} name='password' label='Password' placeholder='Enter your password'/>        
         <Button type="submit">Submit</Button>
       </form>
     </Form>
